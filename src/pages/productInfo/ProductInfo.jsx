@@ -4,7 +4,7 @@ import myContext from "../../context/myContext";
 import { useParams ,useNavigate} from "react-router";
 import { fireDB } from "../../firebase/FirebaseConfig";
 import { doc, getDoc } from "firebase/firestore";
-// import Loader from "../../components/loader/Loader";
+import Loader from "../../components/loader/Loader";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart, deleteFromCart } from "../../redux/cartSlice";
 import toast from "react-hot-toast";
@@ -132,9 +132,9 @@ const ProductInfo = () => {
             <section className="py-5 lg:py-16 font-poppins dark:bg-gray-800">
             {loading ?
                     <>
-                        {/* <div className="flex justify-center items-center">
+                        <div className="flex justify-center items-center">
                             <Loader />
-                        </div> */}
+                        </div>
                     </>
 
                     :

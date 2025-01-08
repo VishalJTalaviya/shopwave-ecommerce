@@ -713,7 +713,7 @@ import toast from "react-hot-toast";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth, fireDB} from "../../firebase/FirebaseConfig";
 import { Timestamp, addDoc, collection } from "firebase/firestore";
-// import Loader from "../../components/loader/Loader";
+import Loader from "../../components/loader/Loader";
 
 const Signup = () => {
 
@@ -809,7 +809,7 @@ const Signup = () => {
     return (
         <div className='flex justify-center items-center h-screen'>
             {/* loader component */}
-            {/* {loading && <Loader/>} */}
+            {loading && <Loader/>}
             {/* Login Form  */}
             <div className="login_Form bg-pink-50 px-1 lg:px-8 py-6 border border-pink-100 rounded-xl shadow-md">
 

@@ -47,9 +47,9 @@ const CategoryPage = () => {
                 {/* main  */}
                 {loading ?
                     <>
-                        {/* <div className="flex justify-center">
+                        <div className="flex justify-center">
                             <Loader />
-                        </div> */}
+                        </div>
                     </>
                     :
                     <>
