@@ -5,6 +5,7 @@ import { useParams ,useNavigate} from "react-router";
 import { fireDB } from "../../firebase/FirebaseConfig";
 import { doc, getDoc } from "firebase/firestore";
 import Loader from "../../components/loader/Loader";
+
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart, deleteFromCart } from "../../redux/cartSlice";
 import toast from "react-hot-toast";
