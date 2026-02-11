@@ -2,8 +2,8 @@ name: Test Slack Notification
 
 on:
   push:
-    branches: [ main, master ]  # triggers on push to main or master
-  workflow_dispatch:  # allows manual trigger from GitHub UI
+    branches: [ main, master ]
+  workflow_dispatch:
 
 jobs:
   test-deployment:
@@ -34,12 +34,13 @@ jobs:
           echo "Deployment completed successfully!"
           sleep 2
       
-      # Slack Notification
+      # Slack Notification - FIXED VERSION
       - name: Slack Notification
         if: always()
         uses: slackapi/slack-github-action@v1.27.0
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
         with:
-          webhook-url: ${{ secrets.SLACK_WEBHOOK_URL }}
           payload: |
             {
               "text": "Deployment ${{ job.status }} for ${{ github.repository }}",
