@@ -1,0 +1,55 @@
+name: Test Slack Notification
+
+on:
+  push:
+    branches: [ main, master ]  # triggers on push to main or master
+  workflow_dispatch:  # allows manual trigger from GitHub UI
+
+jobs:
+  test-deployment:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      
+      - name: Step 1 - Setup
+        run: |
+          echo "Setting up environment..."
+          sleep 2
+      
+      - name: Step 2 - Build
+        run: |
+          echo "Building application..."
+          sleep 2
+      
+      - name: Step 3 - Test
+        run: |
+          echo "Running tests..."
+          sleep 2
+      
+      - name: Step 4 - Deploy
+        run: |
+          echo "Deploying application..."
+          echo "Deployment completed successfully!"
+          sleep 2
+      
+      # Slack Notification
+      - name: Slack Notification
+        if: always()
+        uses: slackapi/slack-github-action@v1.27.0
+        with:
+          webhook-url: ${{ secrets.SLACK_WEBHOOK_URL }}
+          payload: |
+            {
+              "text": "Deployment ${{ job.status }} for ${{ github.repository }}",
+              "blocks": [
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "*Deployment Status:* ${{ job.status }}\n*Repository:* ${{ github.repository }}\n*Branch:* ${{ github.ref_name }}\n*Commit:* ${{ github.sha }}\n*Author:* ${{ github.actor }}"
+                  }
+                }
+              ]
+            }
