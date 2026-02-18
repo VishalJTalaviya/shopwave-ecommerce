@@ -27,7 +27,7 @@ jobs:
         run: |
           echo "Setting up environment..."
           sleep 2
-        #  exit 1
+          exit 1
       
       - name: Step 2 - Build
         run: |
