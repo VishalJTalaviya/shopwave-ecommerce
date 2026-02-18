@@ -43,17 +43,18 @@ jobs:
         with:
           payload: |
             {
-              "text": "Deployment ${{ job.status }} for ${{ github.repository }}",
+              "text": "GitHub Actions Deployment",
               "blocks": [
                 {
                   "type": "section",
                   "text": {
                     "type": "mrkdwn",
-                    "text": "*Deployment Status:* `${{ job.status }}`\n*Repository:* `${{ github.repository }}`\n*Branch:* `${{ github.ref_name }}`\n*Commit:* `${{ github.sha }}`\n*Author:* `${{ github.actor }}`"
+                    "text": "✅ *Deployment Status:* success\n*Repository:* test-repo\n*Branch:* main"
                   }
                 }
               ]
             }
+
    
       # Slack Notification - FIXED VERSION
       # - name: Slack Notification
