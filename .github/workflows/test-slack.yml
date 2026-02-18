@@ -65,7 +65,7 @@ jobs:
                         *Branch:* `${{ github.ref_name }}`
                         *Commit:* `${{ github.sha }}`
                         *Author:* ${{ github.actor }}
-                        *Run:* <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View Logs>
+                        *Details:* <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View Logs>
 
       # - name: Slack Notification
       #   if: always()
