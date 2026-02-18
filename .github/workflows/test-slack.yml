@@ -12,12 +12,35 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-      
+
+      # 🟦 START NOTIFICATION
+      - name: Slack Notification - Deployment Started
+        uses: slackapi/slack-github-action@v2.1.1
+        with:
+          webhook: ${{ secrets.SLACK_WEBHOOK_URL }}
+          webhook-type: incoming-webhook
+          payload: |
+            text: "Deployment started 🚀 for ${{ github.repository }}"
+            attachments:
+              - color: "#439FE0"
+                blocks:
+                  - type: section
+                    text:
+                      type: mrkdwn
+                      text: |
+                        🚀 *Deployment Started*
+                        *Repository:* ${{ github.repository }}
+                        *Branch:* `${{ github.ref_name }}`
+                        *Commit:* `${{ github.sha }}`
+                        *Author:* ${{ github.actor }}
+                        *Run:* <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View Logs>
+
+
       - name: Step 1 - Setup
         run: |
           echo "Setting up environment..."
           sleep 2
-          exit 1
+        #  exit 1
       
       - name: Step 2 - Build
         run: |
