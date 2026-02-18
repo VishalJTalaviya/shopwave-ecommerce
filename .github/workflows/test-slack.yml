@@ -50,7 +50,7 @@ jobs:
                     text:
                       type: mrkdwn
                       text: |
-                        ${{ job.status == 'success' && ':white_check_mark:' || job.status == 'failure' && ':x:' || ':warning:' }} *Deployment Status:* `${{ job.status }}`
+                        ${{ job.status == 'success' && '✅' || job.status == 'failure' && '❌' || '⚠️' }} *Deployment Status:* `${{ job.status }}`
                         *Repository:* ${{ github.repository }}
                         *Branch:* `${{ github.ref_name }}`
                         *Commit:* `${{ github.sha }}`
