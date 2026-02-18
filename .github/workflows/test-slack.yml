@@ -71,12 +71,10 @@ jobs:
                       "short": true
                     }
                   ],
-                  "footer": "GitHub Actions",
-                  "ts": ${{ github.event.repository.updated_at }}
+                  "footer": "GitHub Actions"
                 }
               ]
             }
-
 
       # - name: Slack Notification
       #   if: always()
