@@ -18,10 +18,10 @@ jobs:
           webhook: ${{ secrets.SLACK_WEBHOOK_URL }}
           webhook-type: incoming-webhook
           payload: |
-            text: "Deployment started 🚀 for ${{ github.repository }}"
             attachments:
               - color: "#439FE0"
-            
+              text: "Deployment started 🚀 for ${{ github.repository }}"
+              
       - name: Checkout code
         uses: actions/checkout@v3
         
@@ -29,7 +29,7 @@ jobs:
         run: |
           echo "Setting up environment..."
           sleep 2
-          exit 1
+        # exit 1
       
       - name: Step 2 - Build
         run: |
