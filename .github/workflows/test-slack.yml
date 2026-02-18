@@ -42,7 +42,7 @@ jobs:
           webhook: ${{ secrets.SLACK_WEBHOOK_URL }}
           webhook-type: incoming-webhook
           payload: |
-            text: "Deployment ${{ job.status }} for ${{ github.repository }}"
+            text: "Deployment ${{ job.status }} ${{ job.status == 'success' && '✅' || job.status == 'failure' && '❌' || '⚠️' }} for ${{ github.repository }}"
             attachments:
               - color: "${{ job.status == 'success' && 'good' || job.status == 'failure' && 'danger' || 'warning' }}"
                 blocks:
@@ -50,7 +50,7 @@ jobs:
                     text:
                       type: mrkdwn
                       text: |
-                        ${{ job.status == 'success' && '✅' || job.status == 'failure' && '❌' || '⚠️' }} *Deployment Status:* `${{ job.status }}`
+                        *Deployment Status:* `${{ job.status }}` ${{ job.status == 'success' && '✅' || job.status == 'failure' && '❌' || '⚠️' }}
                         *Repository:* ${{ github.repository }}
                         *Branch:* `${{ github.ref_name }}`
                         *Commit:* `${{ github.sha }}`
