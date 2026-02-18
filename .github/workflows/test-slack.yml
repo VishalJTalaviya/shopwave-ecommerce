@@ -10,10 +10,8 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-    # 🟦 START NOTIFICATION - Single line only
+    
+      # 🟦 START NOTIFICATION 
       - name: Slack Notification - Deployment Started
         uses: slackapi/slack-github-action@v2.1.1
         with:
@@ -21,7 +19,10 @@ jobs:
           webhook-type: incoming-webhook
           payload: |
             text: "🚀 Deployment started for ${{ github.repository }}"
-
+            
+      - name: Checkout code
+        uses: actions/checkout@v3
+        
       - name: Step 1 - Setup
         run: |
           echo "Setting up environment..."
@@ -44,7 +45,7 @@ jobs:
           echo "Deployment completed successfully!"
           sleep 2
 
-      - name: Slack Notification
+      - name: Slack Notification - Deployment Result
         if: always()
         uses: slackapi/slack-github-action@v2.1.1
         with:
