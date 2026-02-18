@@ -43,11 +43,19 @@ jobs:
           webhook-type: incoming-webhook
           payload: |
             text: "Deployment ${{ job.status }} for ${{ github.repository }}"
-            blocks:
-              - type: section
-                text:
-                  type: mrkdwn
-                  text: "*Deployment Status:* ${{ job.status }}\n*Repository:* ${{ github.repository }}\n*Branch:* ${{ github.ref_name }}\n*Commit:* ${{ github.sha }}\n*Author:* ${{ github.actor }}\n*Run:* <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View Logs>"
+            attachments:
+              - color: "${{ job.status == 'success' && 'good' || job.status == 'failure' && 'danger' || 'warning' }}"
+                blocks:
+                  - type: section
+                    text:
+                      type: mrkdwn
+                      text: |
+                        ${{ job.status == 'success' && ':white_check_mark:' || job.status == 'failure' && ':x:' || ':warning:' }} *Deployment Status:* `${{ job.status }}`
+                        *Repository:* ${{ github.repository }}
+                        *Branch:* `${{ github.ref_name }}`
+                        *Commit:* `${{ github.sha }}`
+                        *Author:* ${{ github.actor }}
+                        *Run:* <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View Logs>
 
       # - name: Slack Notification
       #   if: always()
