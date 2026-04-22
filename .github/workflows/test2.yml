@@ -1,7 +1,8 @@
 name: Test Slack Notification
+
 on:
   push:
-    branches: [ main, master ]
+    branches: [main, master]
   workflow_dispatch:
 
 jobs:
@@ -10,70 +11,84 @@ jobs:
 
     steps:
 
-      # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-      # 🚀 START NOTIFICATION
-      # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-      - name: Slack Notification - Deployment Started
+      # ╔══════════════════════════════════════╗
+      # ║        🚀  DEPLOYMENT STARTED        ║
+      # ╚══════════════════════════════════════╝
+      - name: Notify Slack — Started
         uses: slackapi/slack-github-action@v2.1.1
         with:
           webhook: ${{ secrets.SLACK_WEBHOOK_URL }}
           webhook-type: incoming-webhook
           payload: |
             attachments:
-              - color: "#4A90D9"
+              - color: "#0F62FE"
                 blocks:
-                  - type: header
+
+                  - type: section
                     text:
-                      type: plain_text
-                      text: "🚀  Deployment In Progress"
-                      emoji: true
+                      type: mrkdwn
+                      text: |
+                        :rocket:  *Deployment Pipeline Started*
+
                   - type: divider
+
                   - type: section
                     fields:
                       - type: mrkdwn
-                        text: "*📦 Repository*\n`${{ github.repository }}`"
+                        text: ":file_folder:  *Project*\n${{ github.repository }}"
                       - type: mrkdwn
-                        text: "*🌿 Branch*\n`${{ github.ref_name }}`"
+                        text: ":twisted_rightwards_arrows:  *Branch*\n`${{ github.ref_name }}`"
                       - type: mrkdwn
-                        text: "*👤 Triggered By*\n`${{ github.actor }}`"
+                        text: ":bust_in_silhouette:  *Triggered by*\n${{ github.actor }}"
                       - type: mrkdwn
-                        text: "*🔖 Commit*\n`${{ github.sha }}`"
+                        text: ":hash:  *Run*\n#${{ github.run_number }}"
+
                   - type: divider
+
+                  - type: section
+                    text:
+                      type: mrkdwn
+                      text: |
+                        *Pipeline Steps*
+                        :white_circle:  `Setup`   →   :white_circle:  `Build`   →   :white_circle:  `Test`   →   :white_circle:  `Deploy`
+
                   - type: context
                     elements:
                       - type: mrkdwn
-                        text: "⏱️ *Started at* <!date^${{ github.run_attempt }}^{date_num} {time_secs}|just now>  •  <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|🔗 View Workflow Run>"
+                        text: ":github:  <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View on GitHub Actions>  ·  Commit `${{ github.sha }}`"
 
-      # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+      # ───────────────────────────────────────────
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Step 1 - Setup
+      - name: Step 1 — Setup
         run: |
           echo "Setting up environment..."
           sleep 2
-        # exit 1
+        # exit 1   ← uncomment to simulate failure
 
-      - name: Step 2 - Build
+      - name: Step 2 — Build
         run: |
           echo "Building application..."
           sleep 2
 
-      - name: Step 3 - Test
+      - name: Step 3 — Test
         run: |
           echo "Running tests..."
           sleep 2
 
-      - name: Step 4 - Deploy
+      - name: Step 4 — Deploy
         run: |
           echo "Deploying application..."
-          echo "Deployment completed successfully!"
           sleep 2
+          echo "Done!"
 
-      # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-      # ✅ / ❌ RESULT NOTIFICATION
-      # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-      - name: Slack Notification - Deployment Result
+
+      # ╔══════════════════════════════════════╗
+      # ║        📋  DEPLOYMENT RESULT         ║
+      # ╚══════════════════════════════════════╝
+      - name: Notify Slack — Result
         if: always()
         uses: slackapi/slack-github-action@v2.1.1
         with:
@@ -81,46 +96,70 @@ jobs:
           webhook-type: incoming-webhook
           payload: |
             attachments:
-              - color: "${{ job.status == 'success' && '#2ECC71' || job.status == 'failure' && '#E74C3C' || '#F39C12' }}"
+              - color: "${{ job.status == 'success' && '#24A148' || job.status == 'failure' && '#DA1E28' || '#F1C21B' }}"
                 blocks:
-                  - type: header
-                    text:
-                      type: plain_text
-                      text: "${{ job.status == 'success' && '✅  Deployment Successful' || job.status == 'failure' && '❌  Deployment Failed' || '⚠️  Deployment Cancelled' }}"
-                      emoji: true
-                  - type: divider
-                  - type: section
-                    fields:
-                      - type: mrkdwn
-                        text: "*📦 Repository*\n`${{ github.repository }}`"
-                      - type: mrkdwn
-                        text: "*🌿 Branch*\n`${{ github.ref_name }}`"
-                      - type: mrkdwn
-                        text: "*👤 Author*\n`${{ github.actor }}`"
-                      - type: mrkdwn
-                        text: "*🔖 Commit SHA*\n`${{ github.sha }}`"
-                  - type: divider
+
                   - type: section
                     text:
                       type: mrkdwn
-                      text: "${{ job.status == 'success' && '🎉 All steps completed without errors. Your changes are now live!' || job.status == 'failure' && '🔍 One or more steps failed. Please review the logs and fix the issue.' || '🛑 The workflow was cancelled before completing.' }}"
+                      text: "${{ job.status == 'success' && ':large_green_circle:' || job.status == 'failure' && ':red_circle:' || ':large_yellow_circle:' }}  *Deployment ${{ job.status == 'success' && 'Succeeded' || job.status == 'failure' && 'Failed' || 'Cancelled' }}*"
+
                   - type: divider
+
+                  - type: section
+                    fields:
+                      - type: mrkdwn
+                        text: ":file_folder:  *Project*\n${{ github.repository }}"
+                      - type: mrkdwn
+                        text: ":twisted_rightwards_arrows:  *Branch*\n`${{ github.ref_name }}`"
+                      - type: mrkdwn
+                        text: ":bust_in_silhouette:  *Author*\n${{ github.actor }}"
+                      - type: mrkdwn
+                        text: ":hash:  *Run*\n#${{ github.run_number }}"
+                      - type: mrkdwn
+                        text: ":label:  *Commit*\n`${{ github.sha }}`"
+                      - type: mrkdwn
+                        text: ":stopwatch:  *Status*\n`${{ job.status }}`"
+
+                  - type: divider
+
+                  - type: section
+                    text:
+                      type: mrkdwn
+                      text: |
+                        *Pipeline Result*
+                        ${{ job.status == 'success' && ':large_green_circle:  `Setup`   →   :large_green_circle:  `Build`   →   :large_green_circle:  `Test`   →   :large_green_circle:  `Deploy`' || job.status == 'failure' && ':large_green_circle:  `Setup`   →   :large_green_circle:  `Build`   →   :large_green_circle:  `Test`   →   :red_circle:  `Deploy`' || ':white_circle:  `Setup`   →   :white_circle:  `Build`   →   :white_circle:  `Test`   →   :white_circle:  `Deploy`' }}
+
+                  - type: divider
+
+                  - type: section
+                    text:
+                      type: mrkdwn
+                      text: "${{ job.status == 'success' && ':tada:  All steps passed. Your changes are now live in production.' || job.status == 'failure' && ':mag:  A step failed. Review the logs to diagnose and fix the issue.' || ':octagonal_sign:  The workflow was cancelled before it could complete.' }}"
+
                   - type: actions
                     elements:
                       - type: button
                         text:
                           type: plain_text
-                          text: "🔍 View Logs"
+                          text: "📋  View Logs"
                           emoji: true
                         url: "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
                         style: "${{ job.status == 'success' && 'primary' || 'danger' }}"
                       - type: button
                         text:
                           type: plain_text
-                          text: "📂 View Commit"
+                          text: "🔖  Browse Commit"
                           emoji: true
                         url: "${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}"
+                      - type: button
+                        text:
+                          type: plain_text
+                          text: "📂  Open Repo"
+                          emoji: true
+                        url: "${{ github.server_url }}/${{ github.repository }}"
+
                   - type: context
                     elements:
                       - type: mrkdwn
-                        text: "🤖 Automated by *GitHub Actions*  •  Run *#${{ github.run_number }}*"
+                        text: ":github:  *GitHub Actions*  ·  Workflow: `${{ github.workflow }}`  ·  Run #${{ github.run_number }}"
