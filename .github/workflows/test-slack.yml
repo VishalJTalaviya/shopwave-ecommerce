@@ -2,7 +2,7 @@ name: Test Slack Notification
 
 on:
   push:
-    branches: dev
+    branches: main
   workflow_dispatch:
 
 jobs:
@@ -18,7 +18,7 @@ jobs:
           webhook: ${{ secrets.SLACK_WEBHOOK_URL }}
           webhook-type: incoming-webhook
           payload: |
-            text: "Deployment started 🚀 for ${{ github.repository }}"
+            text: "Deployment started 🚀 for ${{ github.repository }} by ${{ github.actor }}"
               
       - name: Checkout code
         uses: actions/checkout@v4
